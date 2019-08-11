@@ -1,3 +1,4 @@
-# umi example with nav and sidebar
+# This project is just for training.
 
-<img src="https://gw.alipayobjects.com/zos/rmsportal/DReQIejdcJPeaXWEDKDe.png" />
+###### forked from [umi-example](https://github.com/umijs/umi-examples/tree/master/with-nav-and-sidebar)
+
