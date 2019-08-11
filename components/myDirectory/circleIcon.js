@@ -1,4 +1,5 @@
 import styled, {keyframes} from "styled-components";
+import {ThemeContext} from '../../layouts/index'
 
 const CircleIcon = styled.div`
   width: 72px;

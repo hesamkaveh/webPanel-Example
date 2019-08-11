@@ -4,8 +4,8 @@ import {DatePicker} from 'antd';
 import React, {Component} from 'react';
 import axios from 'axios'
 import {Row, Col, Slider} from 'antd';
-import {calcContext} from '../../layouts/index'
 import {Input} from 'antd';
+import {ThemeContext} from '../../layouts/index'
 
 import CircleIcon from '../../components/myDirectory/circleIcon'
 import {
@@ -16,10 +16,12 @@ import {
     TextBoxLabel
 } from '../../components/myDirectory/uiGlobalcomponent'
 import moment from "moment";
+import ShowResult from '../../components/myDirectory/ShowResult'
 
 function onChange(date, dateString) {
     console.log(date, dateString);
 }
+
 
 const dateFormat = 'YYYY-MM-DD';
 export default class Add extends Component {
@@ -31,8 +33,20 @@ export default class Add extends Component {
         };
 
     }
+    static contextType = ThemeContext;
 
     componentWillMount() {
+        try {
+            console.log(JSON.parse(localStorage.getItem('myArray')))
+            console.log(JSON.parse(localStorage.getItem('myArray')))
+            console.log(JSON.parse(localStorage.getItem('myArray')))
+            console.log(JSON.parse(localStorage.getItem('myArray')))
+
+            JSON.parse(localStorage.getItem('myArray')).map(data=>this.context.myArray.push(data))
+            this.setState(localStorage.getItem('myArray'))
+        }catch (e) {
+            
+        }
         this.fetchData()
     }
 
@@ -47,14 +61,22 @@ export default class Add extends Component {
     }
 
     onSubmit() {
+        this.context.myArray.push({date:this.state.date,number:this.state.number})
+        // console.log(this.context.myArray)
+        this.setState({
+        })
+        // localStorage.setItem('myArray', this.context.myArray.map(data=>data.date));
+        localStorage.setItem('myArray', JSON.stringify(this.context.myArray));
 
     }
 
     ResetFields() {
+        localStorage.clear()
         this.fetchData()
         this.setState({
             number: 0,
         })
+        this.context.myArray=[]
 
     }
 
@@ -66,6 +88,8 @@ export default class Add extends Component {
     }
 
     render() {
+        const context = this.context;
+
         return (
             <Container>
                 <CircleIcon content={'+'}/>
@@ -84,7 +108,7 @@ export default class Add extends Component {
                                 borderRadius: '4px',
                                 border: 'solid 1px #d9d9d9',
                                 backgroundColor: '#ffffff'
-}} onChange={onChange} value={moment(this.state.date, dateFormat)}/>
+                            }} onChange={onChange} value={moment(this.state.date, dateFormat)}/>
                         </Col>
                         <Col span={12}>
                             <TextBoxLabel>Days to add</TextBoxLabel>
@@ -104,9 +128,9 @@ export default class Add extends Component {
                     </Row>
 
                 </DateContainer>
-                <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit()}>Add</Button>
+                <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit.bind(this)}>Add</Button>
                 <Button style={{margin: '0 5px'}} onClick={this.ResetFields.bind(this)}>Reset</Button>
-
+                <ShowResult data={this.context.myArray}/>
             </Container>
         )
     }

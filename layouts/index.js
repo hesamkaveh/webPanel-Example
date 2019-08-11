@@ -4,7 +4,8 @@ import SiderMenu from "../components/SiderMenu/SiderMenu";
 import {getMenuData} from '../common/menu';
 import logo from '../assets/logo.svg';
 import GlobalHeader from "../components/GlobalHeader";
-import {UserProvider} from '../components/myDirectory/uiGlobalcomponent'
+
+export const ThemeContext = React.createContext('light');
 
 const {Content, Header, Footer} = Layout;
 
@@ -48,9 +49,13 @@ class BasicLayout extends Component {
                             onCollapse={this.handleMenuCollapse}
                         />
                     </Header>
-                    <Content style={{margin: '24px 24px 0', height: '100%'}}>
-                        {children}
-                    </Content>
+                    <ThemeContext.Provider value={{myArray:[]}}>
+
+                        <Content style={{margin: '24px 24px 0', height: '100%'}}>
+                            {children}
+                        </Content>
+                    </ThemeContext.Provider>
+
                 </Layout>
             </Layout>
         );
