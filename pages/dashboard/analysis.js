@@ -33,6 +33,7 @@ export default class Add extends Component {
         };
 
     }
+
     static contextType = ThemeContext;
 
     componentWillMount() {
@@ -42,10 +43,10 @@ export default class Add extends Component {
             console.log(JSON.parse(localStorage.getItem('myArray')))
             console.log(JSON.parse(localStorage.getItem('myArray')))
 
-            JSON.parse(localStorage.getItem('myArray')).map(data=>this.context.myArray.push(data))
+            JSON.parse(localStorage.getItem('myArray')).map(data => this.context.myArray.push(data))
             this.setState(localStorage.getItem('myArray'))
-        }catch (e) {
-            
+        } catch (e) {
+
         }
         this.fetchData()
     }
@@ -61,12 +62,23 @@ export default class Add extends Component {
     }
 
     onSubmit() {
-        this.context.myArray.push({date:this.state.date,number:this.state.number})
-        // console.log(this.context.myArray)
-        this.setState({
-        })
-        // localStorage.setItem('myArray', this.context.myArray.map(data=>data.date));
-        localStorage.setItem('myArray', JSON.stringify(this.context.myArray));
+        axios.post('http://0.0.0.0:8001/add', {
+
+            'ranDate': this.state.date,
+            'num': parseInt(this.state.number),
+
+        }).then(response => (
+            this.context.myArray.push({
+                'date': this.state.date,
+                'number': this.state.number,
+                'action': '+',
+                'result': response.data
+            }),
+                this.setState({}),
+                localStorage.setItem('myArray', JSON.stringify(this.context.myArray))
+        )).catch(error =>
+            console.log(error))
+
 
     }
 
@@ -76,7 +88,7 @@ export default class Add extends Component {
         this.setState({
             number: 0,
         })
-        this.context.myArray=[]
+        this.context.myArray = []
 
     }
 
@@ -92,45 +104,49 @@ export default class Add extends Component {
 
         return (
             <Container>
-                <CircleIcon content={'+'}/>
-                <BelowText>Add to Date</BelowText>
-                <Description>Select a number of days to add to the selected date. <br/>
-                    The resulting date will show on the history section of both pages.</Description>
-                <DateContainer>
-                    <Row gutter={16}>
+                <div style={{maxWidth: "720px", margin: "0 auto"}}>
+                    <CircleIcon content={'+'}/>
+                    <BelowText>Add to Date</BelowText>
+                    <Description>Select a number of days to add to the selected date. <br/>
+                        The resulting date will show on the history section of both pages.</Description>
+                    <DateContainer>
+                        <Row gutter={16}>
 
-                        <Col span={12}>
-                            <TextBoxLabel>Date</TextBoxLabel>
+                            <Col span={12}>
+                                <TextBoxLabel>Date</TextBoxLabel>
 
-                            <DatePicker style={{
-                                width: '294px',
-                                height: '32px',
-                                borderRadius: '4px',
-                                border: 'solid 1px #d9d9d9',
-                                backgroundColor: '#ffffff'
-                            }} onChange={onChange} value={moment(this.state.date, dateFormat)}/>
-                        </Col>
-                        <Col span={12}>
-                            <TextBoxLabel>Days to add</TextBoxLabel>
+                                <DatePicker style={{
+                                    width: '294px',
+                                    height: '32px',
+                                    borderRadius: '4px',
+                                    border: 'solid 1px #d9d9d9',
+                                    backgroundColor: '#ffffff'
+                                }} onChange={onChange} value={moment(this.state.date, dateFormat)}/>
+                            </Col>
+                            <Col span={12}>
+                                <TextBoxLabel>Days to add</TextBoxLabel>
 
-                            <Input style={{
-                                width: '294px',
-                                height: '32px',
-                                borderRadius: '4px',
-                                border: 'solid 1px #d9d9d9',
-                                backgroundColor: '#ffffff'
-                            }}
-                                   value={this.state.number}
-                                   defaultValue={this.state.number}
-                                   onChange={this.handleChangeNumber.bind(this)}
-                                   placeholder="Basic usage"/>
-                        </Col>
-                    </Row>
+                                <Input style={{
+                                    width: '294px',
+                                    height: '32px',
+                                    borderRadius: '4px',
+                                    border: 'solid 1px #d9d9d9',
+                                    backgroundColor: '#ffffff'
+                                }}
+                                       value={this.state.number}
+                                       defaultValue={this.state.number}
+                                       onChange={this.handleChangeNumber.bind(this)}
+                                       placeholder="Basic usage"/>
+                            </Col>
+                        </Row>
 
-                </DateContainer>
-                <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit.bind(this)}>Add</Button>
-                <Button style={{margin: '0 5px'}} onClick={this.ResetFields.bind(this)}>Reset</Button>
-                <ShowResult data={this.context.myArray}/>
+                    </DateContainer>
+                    <div style={{textAlign:'center'}}>
+                        <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit.bind(this)}>Add</Button>
+                        <Button style={{margin: '0 5px'}} onClick={this.ResetFields.bind(this)}>Reset</Button>
+                    </div>
+                    <ShowResult data={this.context.myArray}/>
+                </div>
             </Container>
         )
     }

@@ -3,11 +3,10 @@ import styled from "styled-components";
 export const Container = styled.div`
     padding: 72px 53px;
  width: 1136px;
-  height: 527px;
   border-radius: 2px;
   background-color: #ffffff;
   float: none;
-  text-align: center;
+  text-align: left;
   margin:0 auto;
 `
 export const BelowText = styled.div`
@@ -61,5 +60,4 @@ export const TextBoxLabel = styled.div`
   width: 294px;
   margin:0 auto;
   text-align: left;
- 
 `

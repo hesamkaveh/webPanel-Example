@@ -1,24 +1,76 @@
 import styled, {keyframes} from "styled-components";
-import {Component} from "react";
+import React, {Component} from "react";
 import {ThemeContext} from "../../layouts";
+import library from "umi-plugin-react/src/plugins/library";
 
+export const Title = styled.div`
+    margin-top: 50px;
+    width: 100%;
+    border-bottom: 1px solid #e9e9e9;
+    margin-bottom: -10px;
+`
 
-export default class ShowResult extends Component{
+export default class ShowResult extends Component {
     constructor(props) {
         super(props);
     }
+
     static contextType = ThemeContext;
 
+    calcMonth(month) {
+        switch (parseInt(month)) {
+            case 1:
+                return ("January");
+            case 2:
+                return ("February");
+            case 3:
+                return ("March");
+            case 4:
+                return ("April");
+            case 5:
+                return ("May");
+            case 6:
+                return ("June");
+            case 7:
+                return ("July");
+            case 8:
+                return ("August");
+            case 9:
+                return ("September");
+            case 10:
+                return ("October");
+            case 11:
+                return ("November");
+            case 12:
+                return ("December");
+            default:
+                return ("")
+        }
+
+    }
+
+    showDate(date) {
+
+        let [year, month, day] = date.split('-')
+        return (`${year} ${this.calcMonth(month)} ${day}`)
+    }
+
     render() {
+
         const context = this.context;
-        return(
+        return (
             <div>
-                {console.log(this.props.data)}
-                <div>Add/Subtract Result History</div>
+                <Title>Add/Subtract Result History</Title>
                 <br/>
-                {this.props.data.map(data=>(<div>${data.date} </div> ))}
-                {/*{context.myArray.map(data=>(<div>${data.date} </div>))}*/}
+                {this.props.data.map(data => (<div>
+                    {console.log(11111,this.showDate(data.date))}
+                    <span dangerouslySetInnerHTML={{__html: this.showDate(data.date)}}/>
+                    <span style={data.action==='+'?{color:'#017bc3'}:{color:'#af0150\n'}}> {data.action} </span>
+                    <span>{data.number} Days = </span>
+                    <span dangerouslySetInnerHTML={{__html: this.showDate(data.result)}}/>
+                </div>))}
             </div>
         )
+
     }
 }
