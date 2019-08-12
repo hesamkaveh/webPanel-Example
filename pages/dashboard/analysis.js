@@ -19,10 +19,6 @@ import {
 import moment from "moment";
 import ShowResult from '../../components/myDirectory/ShowResult'
 
-function onChange(date, dateString) {
-    console.log(date, dateString);
-}
-
 
 const dateFormat = 'YYYY-MM-DD';
 
@@ -31,7 +27,7 @@ export default class Add extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            date: '2015-01-01',
+            date: '2011-01-01',
             number: 0,
             haveError: false,
         };
@@ -42,20 +38,16 @@ export default class Add extends Component {
 
     componentWillMount() {
         try {
-            console.log(JSON.parse(localStorage.getItem('myArray')))
-            console.log(JSON.parse(localStorage.getItem('myArray')))
-            console.log(JSON.parse(localStorage.getItem('myArray')))
-            console.log(JSON.parse(localStorage.getItem('myArray')))
-
             JSON.parse(localStorage.getItem('myArray')).map(data => this.context.myArray.push(data))
             this.setState(localStorage.getItem('myArray'))
         } catch (e) {
-
+            console.log(e)
         }
         this.fetchData()
     }
 
     fetchData() {
+        console.log('fetching')
         axios.post('http://0.0.0.0:8001/today').then(response => {
             this.setState({
                 date: response.data,
@@ -87,7 +79,6 @@ export default class Add extends Component {
             )).catch(error =>
                 console.log(error))
         } else {
-            console.log('error')
             this.setState({haveError: 1})
         }
     }
@@ -106,6 +97,14 @@ export default class Add extends Component {
             number: event.target.value
         })
     }
+
+    onChange(date, dateString) {
+
+        this.setState({
+            date: dateString
+        })
+    }
+
 
     render() {
         const context = this.context;
@@ -138,7 +137,11 @@ export default class Add extends Component {
                                     borderRadius: '4px',
                                     border: 'solid 1px #d9d9d9',
                                     backgroundColor: '#ffffff'
-                                }} onChange={onChange} value={moment(this.state.date, dateFormat)}/>
+                                }}
+                                            onChange={this.onChange.bind(this)}
+                                            value={moment(this.state.date, dateFormat)}
+                                            defaultValue={moment(this.state.date, dateFormat)}
+                                />
                             </Col>
                             <Col span={12}>
                                 <TextBoxLabel>Days to add</TextBoxLabel>
@@ -157,7 +160,7 @@ export default class Add extends Component {
                         </Row>
 
                     </DateContainer>
-                    
+
                     <div style={{textAlign: 'center'}}>
                         <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit.bind(this)}>Add</Button>
                         <Button style={{margin: '0 5px'}} onClick={this.ResetFields.bind(this)}>Reset</Button>

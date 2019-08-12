@@ -9,6 +9,11 @@ export const Title = styled.div`
     border-bottom: 1px solid #e9e9e9;
     margin-bottom: -10px;
 `
+const LineNum = styled.span`
+  color:rgba(0, 0, 0, 0.35);
+      width: 25px;
+    display: inline-block;
+`
 
 export default class ShowResult extends Component {
     constructor(props) {
@@ -62,10 +67,10 @@ export default class ShowResult extends Component {
             <div>
                 <Title>Add/Subtract Result History</Title>
                 <br/>
-                {this.props.data.map(data => (<div>
-                    {console.log(11111,this.showDate(data.date))}
+                {this.props.data.map((data, i) => (<div key={i}>
+                    <LineNum>{i} </LineNum>
                     <span dangerouslySetInnerHTML={{__html: this.showDate(data.date)}}/>
-                    <span style={data.action==='+'?{color:'#017bc3'}:{color:'#af0150\n'}}> {data.action} </span>
+                    <span style={data.action === '+' ? {color: '#017bc3'} : {color: '#af0150\n'}}> {data.action} </span>
                     <span>{data.number} Days = </span>
                     <span dangerouslySetInnerHTML={{__html: this.showDate(data.result)}}/>
                 </div>))}
