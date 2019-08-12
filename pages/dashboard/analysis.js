@@ -27,14 +27,13 @@ function onChange(date, dateString) {
 const dateFormat = 'YYYY-MM-DD';
 
 
-
 export default class Add extends Component {
     constructor(props) {
         super(props);
         this.state = {
             date: '2015-01-01',
             number: 0,
-            haveError:false,
+            haveError: false,
         };
 
     }
@@ -65,9 +64,11 @@ export default class Add extends Component {
             console.log(error))
 
     }
+
     closeError() {
-        this.setState({haveError:0})
+        this.setState({haveError: 0})
     }
+
     onSubmit() {
         if (Number.isInteger(parseInt(this.state.number))) {
             axios.post('http://0.0.0.0:8001/add', {
@@ -81,16 +82,14 @@ export default class Add extends Component {
                     'action': '+',
                     'result': response.data
                 }),
-                    this.setState({haveError:0}),
+                    this.setState({haveError: 0}),
                     localStorage.setItem('myArray', JSON.stringify(this.context.myArray))
             )).catch(error =>
                 console.log(error))
         } else {
             console.log('error')
-            this.setState({haveError:1})
-
+            this.setState({haveError: 1})
         }
-
     }
 
     ResetFields() {
@@ -100,14 +99,12 @@ export default class Add extends Component {
             number: 0,
         })
         this.context.myArray = []
-
     }
 
     handleChangeNumber(event) {
         this.setState({
             number: event.target.value
         })
-
     }
 
     render() {
@@ -121,26 +118,20 @@ export default class Add extends Component {
                     <Description>Select a number of days to add to the selected date. <br/>
                         The resulting date will show on the history section of both pages.</Description>
                     <DateContainer>
+
                         <Row gutter={16}>
-                            {
-                                this.state.haveError?
-
-                                    <Alert style={{marginBottom: '26px'}}
-                                           description="Error message. For example: Cannot enter a negative number of days."
-                                           type="error"
-                                           showIcon
-                                           closable
-                                           afterClose={this.closeError.bind(this)}
-                                    />
-
-                                    :
-
-                                    <div></div>
-                            }
+                            {this.state.haveError ?
+                                <Alert style={{marginBottom: '26px'}}
+                                       description="Error message. For example: Cannot enter a negative number of days."
+                                       type="error"
+                                       showIcon
+                                       closable
+                                       afterClose={this.closeError.bind(this)}/>
+                                :
+                                <div></div>}
 
                             <Col span={12}>
                                 <TextBoxLabel>Date</TextBoxLabel>
-
                                 <DatePicker style={{
                                     width: '294px',
                                     height: '32px',
@@ -151,7 +142,6 @@ export default class Add extends Component {
                             </Col>
                             <Col span={12}>
                                 <TextBoxLabel>Days to add</TextBoxLabel>
-
                                 <Input style={{
                                     width: '294px',
                                     height: '32px',
@@ -167,6 +157,7 @@ export default class Add extends Component {
                         </Row>
 
                     </DateContainer>
+                    
                     <div style={{textAlign: 'center'}}>
                         <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit.bind(this)}>Add</Button>
                         <Button style={{margin: '0 5px'}} onClick={this.ResetFields.bind(this)}>Reset</Button>
