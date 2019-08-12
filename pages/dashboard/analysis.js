@@ -6,6 +6,7 @@ import axios from 'axios'
 import {Row, Col, Slider} from 'antd';
 import {Input} from 'antd';
 import {ThemeContext} from '../../layouts/index'
+import {Alert} from 'antd';
 
 import CircleIcon from '../../components/myDirectory/circleIcon'
 import {
@@ -24,12 +25,16 @@ function onChange(date, dateString) {
 
 
 const dateFormat = 'YYYY-MM-DD';
+
+
+
 export default class Add extends Component {
     constructor(props) {
         super(props);
         this.state = {
             date: '2015-01-01',
             number: 0,
+            haveError:false,
         };
 
     }
@@ -60,25 +65,31 @@ export default class Add extends Component {
             console.log(error))
 
     }
-
+    closeError() {
+        this.setState({haveError:0})
+    }
     onSubmit() {
-        axios.post('http://0.0.0.0:8001/add', {
+        if (Number.isInteger(parseInt(this.state.number))) {
+            axios.post('http://0.0.0.0:8001/add', {
+                'ranDate': this.state.date,
+                'num': parseInt(this.state.number),
 
-            'ranDate': this.state.date,
-            'num': parseInt(this.state.number),
+            }).then(response => (
+                this.context.myArray.push({
+                    'date': this.state.date,
+                    'number': this.state.number,
+                    'action': '+',
+                    'result': response.data
+                }),
+                    this.setState({haveError:0}),
+                    localStorage.setItem('myArray', JSON.stringify(this.context.myArray))
+            )).catch(error =>
+                console.log(error))
+        } else {
+            console.log('error')
+            this.setState({haveError:1})
 
-        }).then(response => (
-            this.context.myArray.push({
-                'date': this.state.date,
-                'number': this.state.number,
-                'action': '+',
-                'result': response.data
-            }),
-                this.setState({}),
-                localStorage.setItem('myArray', JSON.stringify(this.context.myArray))
-        )).catch(error =>
-            console.log(error))
-
+        }
 
     }
 
@@ -111,6 +122,21 @@ export default class Add extends Component {
                         The resulting date will show on the history section of both pages.</Description>
                     <DateContainer>
                         <Row gutter={16}>
+                            {
+                                this.state.haveError?
+
+                                    <Alert style={{marginBottom: '26px'}}
+                                           description="Error message. For example: Cannot enter a negative number of days."
+                                           type="error"
+                                           showIcon
+                                           closable
+                                           afterClose={this.closeError.bind(this)}
+                                    />
+
+                                    :
+
+                                    <div></div>
+                            }
 
                             <Col span={12}>
                                 <TextBoxLabel>Date</TextBoxLabel>
@@ -141,7 +167,7 @@ export default class Add extends Component {
                         </Row>
 
                     </DateContainer>
-                    <div style={{textAlign:'center'}}>
+                    <div style={{textAlign: 'center'}}>
                         <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit.bind(this)}>Add</Button>
                         <Button style={{margin: '0 5px'}} onClick={this.ResetFields.bind(this)}>Reset</Button>
                     </div>

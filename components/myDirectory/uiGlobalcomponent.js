@@ -39,11 +39,10 @@ export const Description = styled.div`
 `
 export const DateContainer = styled.div`
  width: 720px;
-  height: 141px;
-  border-radius: 2px;
+   border-radius: 2px;
   background-color: #fafafa;
   margin:25px auto;
-      padding: 40px 0;
+      padding: 40px 40px;
 
   
 `
