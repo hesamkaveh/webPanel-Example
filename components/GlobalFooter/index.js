@@ -1,21 +1,29 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './index.less';
-
+import styled from "styled-components";
+export const Copyright = styled.div`
+  font-family: PingFangSC;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.67;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.45);
+  text-align: center;
+  margin:0 auto;
+`
 const GlobalFooter = ({ className, links, copyright }) => {
   const clsString = classNames(styles.globalFooter, className);
   return (
     <div className={clsString}>
-      {links && (
         <div className={styles.links}>
-          {links.map(link => (
-            <a key={link.key} target={link.blankTarget ? '_blank' : '_self'} href={link.href}>
-              {link.title}
-            </a>
-          ))}
+          <a href='http://google.com'>About</a>
+          <a href='http://google.com'>Contact</a>
+          <a href='http://google.com'>Privacy</a>
         </div>
-      )}
-      {copyright && <div className={styles.copyright}>{copyright}</div>}
+       <Copyright className={styles.copyright}> Copyright © 2019 Develop & Conquer Inc.</Copyright>
     </div>
   );
 };
