@@ -14,6 +14,6 @@ margin: 0 auto;
 `;
 export default (props) =>
     <>
-        <CircleIcon>{props.content}</CircleIcon>
+        <CircleIcon style={props.content==='-'?{backgroundColor: 'rgb(175, 1, 80)'}:{}} >{props.content}</CircleIcon>
     </>
 
