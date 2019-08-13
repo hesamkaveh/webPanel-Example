@@ -12,14 +12,18 @@ const routes = [
     component: require('../../layouts/index.js').default,
     routes: [
       {
-        path: '/dashboard/analysis',
+        path: '/dashboard/add',
         exact: true,
-        component: require('../dashboard/analysis.js').default,
+        component: require('../dashboard/DateChanger.js').default,
+        whatToDo:'add'
+
       },
       {
-        path: '/dashboard/monitor',
+        path: '/dashboard/subtract',
         exact: true,
-        component: require('../dashboard/monitor.js').default,
+        component: require('../dashboard/DateChanger.js').default,
+        whatToDo:'subtract'
+
       },
       {
         path: '/',

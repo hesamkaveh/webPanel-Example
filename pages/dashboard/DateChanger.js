@@ -23,7 +23,7 @@ import ShowResult from '../../components/myDirectory/ShowResult'
 const dateFormat = 'YYYY-MM-DD';
 
 
-export default class Add extends Component {
+export default class DateChanger extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,6 +35,7 @@ export default class Add extends Component {
     }
 
     static contextType = ThemeContext;
+    whatToDo=this.props.route.whatToDo
 
     componentWillMount() {
         try {
@@ -63,7 +64,7 @@ export default class Add extends Component {
 
     onSubmit() {
         if (Number.isInteger(parseInt(this.state.number))) {
-            axios.post('http://0.0.0.0:8001/add', {
+            axios.post(`http://0.0.0.0:8001/${this.whatToDo === 'add' ? 'add' : 'sub'}`, {
                 'ranDate': this.state.date,
                 'num': parseInt(this.state.number),
 
@@ -71,7 +72,7 @@ export default class Add extends Component {
                 this.context.myArray.push({
                     'date': this.state.date,
                     'number': this.state.number,
-                    'action': '+',
+                    'action': this.whatToDo === 'add' ? '+' : '-',
                     'result': response.data
                 }),
                     this.setState({haveError: 0}),
@@ -105,16 +106,14 @@ export default class Add extends Component {
         })
     }
 
-
     render() {
         const context = this.context;
-
         return (
             <Container>
                 <div style={{maxWidth: "720px", margin: "0 auto"}}>
-                    <CircleIcon content={'+'}/>
-                    <BelowText>Add to Date</BelowText>
-                    <Description>Select a number of days to add to the selected date. <br/>
+                    <CircleIcon content={this.whatToDo === 'add' ? '+' : '-'}/>
+                    <BelowText>{this.whatToDo === 'add' ? 'Add' : 'Subtract'} to Date</BelowText>
+                    <Description>Select a number of days to {this.whatToDo === 'add' ? 'add' : 'subtract'} to the selected date. <br/>
                         The resulting date will show on the history section of both pages.</Description>
                     <DateContainer>
 
@@ -144,7 +143,7 @@ export default class Add extends Component {
                                 />
                             </Col>
                             <Col span={12}>
-                                <TextBoxLabel>Days to add</TextBoxLabel>
+                                <TextBoxLabel>Days to {this.whatToDo === 'add' ? 'Add' : 'Subtract'}</TextBoxLabel>
                                 <Input style={{
                                     width: '294px',
                                     height: '32px',
@@ -162,7 +161,7 @@ export default class Add extends Component {
                     </DateContainer>
 
                     <div style={{textAlign: 'center'}}>
-                        <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit.bind(this)}>Add</Button>
+                        <Button style={{margin: '0 5px'}} type="primary" onClick={this.onSubmit.bind(this)}>{this.whatToDo === 'add' ? 'Add' : 'Subtract'}</Button>
                         <Button style={{margin: '0 5px'}} onClick={this.ResetFields.bind(this)}>Reset</Button>
                     </div>
                     <ShowResult data={this.context.myArray}/>

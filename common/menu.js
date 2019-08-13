@@ -13,11 +13,11 @@ const menuData = [
     children: [
       {
         name: 'Add',
-        path: 'analysis',
+        path: 'add',
       },
       {
         name: 'Subtract',
-        path: 'monitor',
+        path: 'subtract',
       },
 
     ],

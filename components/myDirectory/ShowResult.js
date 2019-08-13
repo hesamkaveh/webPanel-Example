@@ -14,6 +14,9 @@ const LineNum = styled.span`
       width: 25px;
     display: inline-block;
 `
+const Action = styled.span`
+  font-weight: bold;
+`
 
 export default class ShowResult extends Component {
     constructor(props) {
@@ -70,7 +73,8 @@ export default class ShowResult extends Component {
                 {this.props.data.map((data, i) => (<div key={i}>
                     <LineNum>{i} </LineNum>
                     <span dangerouslySetInnerHTML={{__html: this.showDate(data.date)}}/>
-                    <span style={data.action === '+' ? {color: '#017bc3'} : {color: '#af0150\n'}}> {data.action} </span>
+                    <Action
+                        style={data.action === '+' ? {color: '#017bc3'} : {color: '#af0150\n'}}> {data.action} </Action>
                     <span>{data.number} Days = </span>
                     <span dangerouslySetInnerHTML={{__html: this.showDate(data.result)}}/>
                 </div>))}
