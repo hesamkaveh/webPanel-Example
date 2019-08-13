@@ -120,7 +120,7 @@ export default class DateChanger extends Component {
                         <Row gutter={16}>
                             {this.state.haveError ?
                                 <Alert style={{marginBottom: '26px'}}
-                                       description="Error message. For example: Cannot enter a negative number of days."
+                                       description="Error message. You should enter an positive number!"
                                        type="error"
                                        showIcon
                                        closable
