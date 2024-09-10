@@ -7,7 +7,7 @@
     "lodash": "^4.17.10",
     "lodash-decorators": "^5.0.0",
     "moment": "^2.22.1",
-    "path-to-regexp": "^1.7.0",
+    "path-to-regexp": "^8.0.0",
     "rc-drawer-menu": "^0.5.7",
     "umi": "^2.1.1",
     "umi-plugin-react": "^1.0.0-beta.17",
